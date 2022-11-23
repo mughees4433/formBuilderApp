@@ -30,6 +30,7 @@ function PreviewApp() {
         {inputs.length > 0
           ? appendInputs()
           : "Please add some fields in your form"}
+        {}
       </div>
     </>
   );

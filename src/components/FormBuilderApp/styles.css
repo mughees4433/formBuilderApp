@@ -1,16 +1,17 @@
 .formBuilderApp {
   display: flex;
-  justify-content: center;
   align-items: center;
-  line-height: 100%;
-  height: 100%;
-  width: 50%;
-  position: fixed;
+  height: 100vh;
+  flex: 6 1;
   z-index: 1;
   overflow-x: hidden;
   padding-top: 100px;
   left: 0;
   flex-direction: column;
+  border-right: dashed rgb(172, 133, 133);
+  overflow-y: scroll;
+  flex-wrap: nowrap;
+  align-content: center;
 }
 
 .form {
@@ -55,4 +56,30 @@
   transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out,
     0.1s padding ease-in-out;
   -webkit-appearance: none;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+.button {
+  margin: 20px;
+  width: 70%;
+  height: 56px;
+  position: relative;
+  padding: 0px 16px;
+  border: none;
+  border-radius: 4px;
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  background-color: white;
+  color: #282828;
+  box-shadow: 0px 4px 20px 0px transparent;
+  transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out,
+    0.1s padding ease-in-out;
+  -webkit-appearance: none;
+}
+.clear {
+  width: 30%;
 }

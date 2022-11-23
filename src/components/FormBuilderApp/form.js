@@ -1,17 +1,42 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setField } from "../../actions";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setField, updateField, resetFieldtoUpdate } from "../../actions";
 import "./styles.css";
 function Form() {
   const dispatch = useDispatch();
   const [label, setLabel] = useState();
   const [type, setType] = useState("text");
   const [newOpt, setnewOpt] = useState([]);
-
+  const fieldIDToEdit = useSelector((state) => state.fieldToEdit);
+  const fields = useSelector((state) => state.fields);
+  useEffect(() => {
+    const fieldToEdit = fields.filter((field) => {
+      return field.id == fieldIDToEdit;
+    });
+    if (fieldToEdit.length > 0) {
+      setLabel(fieldToEdit[0].label);
+      setType(fieldToEdit[0].type);
+      setnewOpt(fieldToEdit[0].newOpt);
+    }
+  }, [fieldIDToEdit]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const field = { label, type, newOpt };
-    dispatch(setField(field));
+    if (fieldIDToEdit.length > 0) {
+      const field = { label, type, newOpt, id: fieldIDToEdit };
+      dispatch(updateField(field));
+    } else {
+      const id = Date.now();
+      const field = { label, type, newOpt, id };
+      dispatch(setField(field));
+    }
+
+    reset();
+  };
+  const reset = () => {
+    setLabel("");
+    setType("text");
+    setnewOpt([]);
+    dispatch(resetFieldtoUpdate());
   };
   const getLabel = (e) => {
     setLabel(e.currentTarget.value);
@@ -45,19 +70,19 @@ function Form() {
   return (
     <div className="form">
       <form onSubmit={handleSubmit}>
-        <div className="input-container">
+        <div className="formInput">
           <label>Label </label>
           <input
             type="text"
-            name="uname"
+            value={label}
             placeholder="Please enter label"
             onChange={getLabel}
             required
           />
         </div>
-        <div className="input-container">
+        <div className="formInput">
           <label>Input Type </label>
-          <select onChange={getType}>
+          <select value={type} onChange={getType}>
             <option selected value="text">
               Text
             </option>
@@ -71,11 +96,11 @@ function Form() {
         </div>
         {type !== "text" && (
           <>
-            <div className="input-container">
+            <div className="formInput">
               <label>Please Enter the number of options </label>
               <input
                 type="text"
-                name="uname"
+                value={newOpt.length}
                 placeholder="number of options "
                 onChange={getOptionsNo}
                 required
@@ -83,10 +108,11 @@ function Form() {
             </div>
             {newOpt.map((opt) => {
               return (
-                <div className="input-container">
+                <div className="formInput">
                   <label>Please Enter the option</label>
                   <input
                     type="text"
+                    value={opt.val}
                     placeholder="number of options "
                     onChange={(e) => {
                       onEnterOptionChange(e.currentTarget.value, opt);
@@ -100,6 +126,11 @@ function Form() {
         )}
         <div className="button-container">
           <input type="submit" value="Add" />
+          {fieldIDToEdit.length > 0 && (
+            <button className="button" onClick={reset}>
+              Cancel
+            </button>
+          )}
         </div>
       </form>
     </div>

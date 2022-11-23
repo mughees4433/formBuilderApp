@@ -1,10 +1,15 @@
 import React from "react";
-
+import { useDispatch } from "react-redux";
+import { editFieldwithId } from "../../actions";
 const InputField = (props) => {
-  console.log("inside field", props.inputField);
+  const dispatch = useDispatch();
   const inputFieldData = props.inputField;
+  const editForm = (e) => {
+    e.stopPropagation();
+    dispatch(editFieldwithId(e.currentTarget.id));
+  };
   return (
-    <div className="inputForm">
+    <div className="inputForm" onClick={editForm} id={inputFieldData.id}>
       <form>
         <div className="input-container">
           <label>{inputFieldData.label} </label>

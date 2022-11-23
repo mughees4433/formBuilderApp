@@ -6,8 +6,10 @@ import { clearField } from "../../actions";
 function FormBuilderApp() {
   const [inputs, setinputs] = useState([]);
   useEffect(() => {
-    JSON.parse(localStorage.getItem("fields")) &&
-      setinputs(JSON.parse(localStorage.getItem("fields")));
+    if (localStorage.getItem("fields")) {
+      JSON.parse(localStorage.getItem("fields")) &&
+        setinputs(JSON.parse(localStorage.getItem("fields")));
+    }
   }, []);
   const dispatch = useDispatch();
   const clearLocalStorage = () => {
@@ -18,7 +20,9 @@ function FormBuilderApp() {
       <header>Welcome to the Form Builder App</header>
       <Form />
       {inputs.length > 0 && (
-        <button onClick={clearLocalStorage}> Clear Form </button>
+        <button class="button clear" onClick={clearLocalStorage}>
+          Clear Form
+        </button>
       )}
     </div>
   );

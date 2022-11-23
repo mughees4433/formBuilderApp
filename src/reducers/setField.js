@@ -5,6 +5,21 @@ const setFieldReducer = (state = [], action) => {
       const newField = [...state, field];
       localStorage.setItem("fields", JSON.stringify(newField));
       return newField;
+    case "UPDATE_FIELD":
+      const fieldToEdit = action.payload;
+      const previousField = [...state];
+      debugger;
+      const updatedFields = previousField.map((field) => {
+        if (field.id == fieldToEdit.id) {
+          debugger;
+          return fieldToEdit;
+        }
+
+        return field;
+      });
+      debugger;
+      localStorage.setItem("fields", JSON.stringify(updatedFields));
+      return updatedFields;
     case "CLEAR_FIELD":
       localStorage.removeItem("fields");
       return (state = []);
